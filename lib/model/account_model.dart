@@ -6,7 +6,7 @@ class Account {
 
   Account({required this.email,required this.number,required this.adress});
 
-  Account.fromJson(Map <String dynamic> json)
+  Account.fromJson(Map <String, dynamic> json)
          :email = json["email"],
           number = json["number"],
           adress = json["adress"];

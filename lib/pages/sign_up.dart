@@ -31,9 +31,9 @@ class _LogInState extends State<SignUp> {
 
     var account2 = HiveDB().loadAccount();
 
-    print(email);
-    print(number);
-    print(adress);
+    print(account2.email);
+    print(account2.number);
+    print(account2.adress);
   }
 
   @override
