@@ -1,5 +1,8 @@
+import 'package:datademos/model/user_model.dart';
 import 'package:datademos/pages/sign_up.dart';
+import 'package:datademos/services/db_service.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 
 class LogIn extends StatefulWidget {
   static const String id = "log_in";
@@ -11,119 +14,161 @@ class LogIn extends StatefulWidget {
 }
 
 class _LogInState extends State<LogIn> {
+
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  void _doSignIn(){
+
+    String email = emailController.text.toString().trim();
+    String password = passwordController.text.toString().trim();
+
+    var user = User(email: email, password: password);
+
+    HiveDB().storeUser(user);
+
+    var user2 = HiveDB().loadUser();
+
+    print(user2.email);
+    print(user2.password);
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF150C30),
+      resizeToAvoidBottomInset: false,
+      backgroundColor: const Color(0xFF27736c),
       body: Container(
-        margin: const EdgeInsets.all(30),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const SizedBox(
-              height: 100,
+            Expanded(
+                flex: 1,
+                child: Container(
+                  margin: EdgeInsets.all(30),
+                  width: double.infinity,
+                  color: Color(0xFF27736c),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(top: 3),
+                        height: 50,
+                        width: 50,
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: NetworkImage("https://monteluke.com.au/wp-content/gallery/linkedin-profile-pictures/2.jpg"),
+                          ),
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                      SizedBox(height: 20,),
+                      Text("Welcome", style: TextStyle(color: Color(0xFF35a197), fontWeight: FontWeight.bold, fontSize: 19),),
+                      SizedBox(height: 10,),
+                      Text("Sign In", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 30),),
+                    ],
+                  ),
+                )
             ),
-            Container(
-              height: 50,
-              width: 50,
-              decoration: BoxDecoration(
-                image: const DecorationImage(
-                  image: NetworkImage('https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80'),
-                  fit: BoxFit.cover,
-                ),
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-              ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            const Center(
-              child: Text("Welcome Back!", style: TextStyle(color: Colors.white70, fontSize: 25, fontWeight: FontWeight.bold),),
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            const Center(
-              child: Text("Sign in to continue", style: TextStyle(color: Colors.white70, fontSize: 16, fontWeight: FontWeight.bold),),
-            ),
-            const SizedBox(
-              height: 50,
-            ),
-            const TextField(
-              style: TextStyle(color: Colors.white),
-              decoration: InputDecoration(
-                prefixIcon: Icon(Icons.person_outline, color: Colors.grey,),
-                hintText: "User Name",
-                hintStyle: TextStyle(color: Colors.white60, height: .6, fontWeight: FontWeight.bold),
-                enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
-                disabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
-                focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
-              ),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            const TextField(
-              style: TextStyle(color: Colors.white),
-              decoration: InputDecoration(
-                prefixIcon: Icon(Icons.lock_outline, color: Colors.grey,),
-                hintText: "Password",
-                hintStyle: TextStyle(color: Colors.white60, height: .6, fontWeight: FontWeight.bold),
-                enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
-                disabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
-                focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
-              ),
-            ),
-            const SizedBox(
-              height: 40,
-            ),
-            Center(
-              child: Text("Forgot Password?", style: TextStyle(color: Colors.grey.shade600, fontSize: 14, letterSpacing: 0.8, height: .7, fontWeight: FontWeight.bold),),
-            ),
-            const SizedBox(
-              height: 50,
-            ),
-            Container(
-              height: 65,
-              width: 65,
-              decoration: BoxDecoration(
-                color: Colors.blue,
-                gradient: LinearGradient(
-                    begin: Alignment.centerLeft,
-                    end: Alignment.centerRight,
-                    colors: [
-                      Colors.blueAccent.shade700,
-                      Colors.blue.shade800,
-                      Colors.lightBlueAccent
-                    ]),
-                shape: BoxShape.circle,
-              ),
-              child: IconButton(
-                icon: const Icon(Icons.arrow_forward,  size: 45,),
-                color: Colors.white,
-                onPressed: (){
 
-                },
-              ),
-            ),
-            const SizedBox(
-              height: 100,
-            ),
-            Center(
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text("Don't have an account?", style: TextStyle(color: Colors.grey.shade600, fontSize: 15, letterSpacing: 0.8, height: .7, fontWeight: FontWeight.bold),),
-                  TextButton(onPressed: (){
-                    Navigator.pushNamed(context, SignUp.id);
-                  },
-                      child: Text("SIGN UP", style: TextStyle(color: Colors.blueAccent.shade200, fontSize: 15, letterSpacing: 0.3, height: .8,),)
-                  )
-                ],
-              ),
-            ),
+            Expanded(
+                flex: 2,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30)),
+                  ),
+                  child: Container(
+                    margin: EdgeInsets.all(30),
+                    child: Column(
+                      children: [
+                        TextField(
+                          controller: emailController,
+                          decoration: InputDecoration(
+                            focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Color(0xFF27736c), width: 2.1)),
+                            enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.grey.shade300, width: 0.1)),
+                            labelText: "Email",
+                            labelStyle: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 18, letterSpacing: 1),
+                            hintText: "Enter Email",
+                            hintStyle: TextStyle(color: Colors.grey.shade300, fontSize: 12, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        SizedBox(height: 20,),
+                        TextField(
+                          controller: passwordController,
+                          decoration: InputDecoration(
+                            focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Color(0xFF27736c), width: 2.1)),
+                            enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.grey, width: 0.1)),
+                            labelText: "Password",
+                            labelStyle: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 18, letterSpacing: 1),
+                            hintText: "Enter Password",
+                            hintStyle: TextStyle(color: Colors.grey.shade300, fontSize: 12, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        SizedBox(height: 20,),
+                        Center(
+                          child: Text("Forget Password?", style: TextStyle(color: Colors.grey.shade300, fontWeight: FontWeight.bold),),
+                        ),
+                        SizedBox(height: 20,),
+                        Container(
+                          height: 40,
+                          width: double.infinity,
+                          margin: EdgeInsets.only(top: 30, left: 30, right: 30, bottom: 20),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(7),
+                            color: Color(0xFF27736c),
+                          ),
+                          child: Center(
+                            child: TextButton(child: Text("Sign In", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+                              onPressed: (){
+                                _doSignIn();
+                              },
+                            ),
+                          ),
+                        ),
+                        Center(
+                          child: Text("OR", style: TextStyle(color: Colors.grey.shade300, fontWeight: FontWeight.bold),),
+                        ),
+                        SizedBox(height: 34,),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.facebook, color: Colors.blueAccent.shade700,),
+                            SizedBox(width: 30,),
+                            Icon(Icons.flutter_dash_sharp, color: Colors.lightBlue,),
+                            SizedBox(width: 30,),
+                            Icon(Icons.linked_camera_rounded,),
+                          ],
+                        ),
+                        SizedBox(height: 60,),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Center(
+                              child: Text("Don't have an account?", style: TextStyle(color: Colors.grey.shade300, fontWeight: FontWeight.bold),),
+                            ),
+                            SizedBox(width: 1,),
+                            Center(
+                              child: TextButton(
+                                child: Text("SignUp",
+                                  style: TextStyle(
+                                      color: Color(0xFF27736c),
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                onPressed: (){
+                                  Navigator.pushNamed(context, SignUp.id);
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+            )
           ],
         ),
       ),

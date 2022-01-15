@@ -1,3 +1,6 @@
+import 'package:datademos/model/account_model.dart';
+import 'package:datademos/services/db_service.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'log_in.dart';
@@ -12,143 +15,158 @@ class SignUp extends StatefulWidget {
 
 class _LogInState extends State<SignUp> {
 
-  final usernameControll = TextEditingController();
-  final passwordControll = TextEditingController();
   final emailControll = TextEditingController();
-  final phoneNumberControll = TextEditingController();
+  final numberControll = TextEditingController();
+  final adressControll = TextEditingController();
 
   void _doSignUp(){
-    String username = usernameControll.text.toString().trim();
-    String password = passwordControll.text.toString().trim();
-    String email = emailControll.text.toString().trim();
-    String phoneNumber = phoneNumberControll.text.toString().trim();
 
-    print(username);
-    print(password);
+    String email = emailControll.text.toString().trim();
+    String number = numberControll.text.toString().trim();
+    String adress = adressControll.text.toString().trim();
+
+    var account = Account(email: email, number: number, adress: adress);
+
+    HiveDB().storeAccount(account);
+
+    var account2 = HiveDB().loadAccount();
+
     print(email);
-    print(phoneNumber);
+    print(number);
+    print(adress);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF150C30),
+      resizeToAvoidBottomInset: false,
+      backgroundColor: Color(0xFF27736c),
       body: Container(
-        margin: const EdgeInsets.all(30),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const SizedBox(
-              height: 27,
+            Expanded(
+              flex: 1,
+                child: Container(
+                  margin: EdgeInsets.all(30),
+                  width: double.infinity,
+                  color: Color(0xFF27736c),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(height: 40,),
+                      Text("Welcome", style: TextStyle(color: Color(0xFF35a197), fontWeight: FontWeight.bold, fontSize: 19),),
+                      SizedBox(height: 10,),
+                      Text("Sign Up", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 30),),
+                    ],
+                  ),
+                )
             ),
-            const Center(
-              child: SizedBox(
-                  width: 150,
-                  child: Text("Create Account", style: TextStyle(color: Colors.white, fontSize: 25, fontWeight: FontWeight.w400, letterSpacing: 1), textAlign: TextAlign.center,)),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            TextField(
-              style: const TextStyle(color: Colors.white),
-              controller: usernameControll,
-              decoration: InputDecoration(
-                prefixIcon: Icon(Icons.person_outline, color: Colors.grey.shade600,),
-                hintText: "User Name",
-                hintStyle: const TextStyle(color: Colors.white60, height: .6, fontWeight: FontWeight.bold),
-                enabledBorder: const UnderlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
-                disabledBorder: const UnderlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
-                focusedBorder: const UnderlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
-              ),
-            ),
-            const SizedBox(
-              height: 5,
-            ),
-            TextField(
-              style: const TextStyle(color: Colors.white),
-              controller: emailControll,
-              decoration: InputDecoration(
-                prefixIcon: Icon(Icons.email_outlined, color: Colors.grey.shade600,),
-                hintText: "E_Mail",
-                hintStyle: const TextStyle(color: Colors.white60, height: .6, fontWeight: FontWeight.bold),
-                enabledBorder: const UnderlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
-                disabledBorder: const UnderlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
-                focusedBorder: const UnderlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
-              ),
-            ),
-            const SizedBox(
-              height: 5,
-            ),
-            TextField(
-              style: const TextStyle(color: Colors.white),
-              controller: phoneNumberControll,
-              decoration: InputDecoration(
-                prefixIcon: Icon(Icons.phone_outlined, color: Colors.grey.shade600,),
-                hintText: "Phone Number",
-                hintStyle: const TextStyle(color: Colors.white60, height: .6, fontWeight: FontWeight.bold),
-                enabledBorder: const UnderlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
-                disabledBorder: const UnderlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
-                focusedBorder: const UnderlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
-              ),
-            ),
-            const SizedBox(
-              height: 5,
-            ),
-            TextField(
-              style: const TextStyle(color: Colors.white),
-              controller: passwordControll,
-              decoration: InputDecoration(
-                prefixIcon: Icon(Icons.lock_outline_rounded, color: Colors.grey.shade600,),
-                hintText: "Password",
-                hintStyle: const TextStyle(color: Colors.white60, height: .6, fontWeight: FontWeight.bold),
-                enabledBorder: const UnderlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
-                disabledBorder: const UnderlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
-                focusedBorder: const UnderlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
-              ),
-            ),
-            const SizedBox(
-              height: 15,
-            ),
-            Container(
-              height: 65,
-              width: 65,
-              decoration: BoxDecoration(
-                color: Colors.blue,
-                gradient: LinearGradient(
-                    begin: Alignment.centerLeft,
-                    end: Alignment.centerRight,
-                    colors: [
-                      Colors.blueAccent.shade700,
-                      Colors.blue.shade800,
-                      Colors.lightBlueAccent
-                    ]),
-                shape: BoxShape.circle,
-              ),
-              child: IconButton(
-                icon: const Icon(Icons.arrow_forward,  size: 45,),
-                color: Colors.white,
-                onPressed: (){
-                  _doSignUp;
-                },
-              ),
-            ),
-            const SizedBox(
-              height: 15,
-            ),
-            Center(
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text("Already have an account?", style: TextStyle(color: Colors.grey.shade600, fontSize: 15, letterSpacing: 0.8, height: .7, fontWeight: FontWeight.bold),),
-                  TextButton(onPressed: (){
-                    Navigator.pushNamed(context, LogIn.id);
-                  },
-                      child: Text("SIGN IN", style: TextStyle(color: Colors.blueAccent.shade200, fontSize: 15, letterSpacing: 0.3, height: .8,),)
-                  )
-                ],
-              ),
-            ),
+
+            Expanded(
+              flex: 2,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30)),
+                  ),
+                  child: Container(
+                    margin: EdgeInsets.all(30),
+                    child: Column(
+                      children: [
+                        TextField(
+                          controller: emailControll,
+                          decoration: InputDecoration(
+                            focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Color(0xFF27736c), width: 2.1)),
+                            enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.grey.shade300, width: 0.1)),
+                            labelText: "Email",
+                            labelStyle: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 18, letterSpacing: 1),
+                            hintText: "Enter Email",
+                            hintStyle: TextStyle(color: Colors.grey.shade300, fontSize: 12, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        SizedBox(height: 20,),
+                        TextField(
+                          controller: numberControll,
+                          decoration: InputDecoration(
+                            focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Color(0xFF27736c), width: 2.1)),
+                            enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.grey, width: 0.1)),
+                            labelText: "Number",
+                            labelStyle: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 18, letterSpacing: 1),
+                            hintText: "Enter Number",
+                            hintStyle: TextStyle(color: Colors.grey.shade300, fontSize: 12, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        SizedBox(height: 20,),
+                        TextField(
+                          controller: adressControll,
+                          decoration: InputDecoration(
+                            focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Color(0xFF27736c), width: 2.1)),
+                            enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.grey, width: 0.1)),
+                            labelText: "Address",
+                            labelStyle: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 18, letterSpacing: 1),
+                            hintText: "Enter Address",
+                            hintStyle: TextStyle(color: Colors.grey.shade300, fontSize: 12, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        Container(
+                          height: 40,
+                          width: double.infinity,
+                          margin: EdgeInsets.only(top: 30, left: 30, right: 30, bottom: 20),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(7),
+                            color: Color(0xFF27736c),
+                          ),
+                          child: Center(
+                            child: TextButton(child: Text("Sign Up", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+                            onPressed: (){
+                              _doSignUp();
+                            },
+                            ),
+                          ),
+                        ),
+                        Center(
+                          child: Text("OR", style: TextStyle(color: Colors.grey.shade300, fontWeight: FontWeight.bold),),
+                        ),
+                        SizedBox(height: 30,),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.facebook, color: Colors.blueAccent.shade700,),
+                            SizedBox(width: 30,),
+                            Icon(Icons.flutter_dash_sharp, color: Colors.lightBlue,),
+                            SizedBox(width: 30,),
+                            Icon(Icons.linked_camera_rounded,),
+                          ],
+                        ),
+                        SizedBox(height: 30,),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Center(
+                              child: Text("Already have an account?", style: TextStyle(color: Colors.grey.shade300, fontWeight: FontWeight.bold),),
+                            ),
+                            SizedBox(width: 1,),
+                            Center(
+                              child: TextButton(
+                                child: Text("SignIn",
+                                  style: TextStyle(
+                                      color: Color(0xFF27736c),
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                onPressed: (){
+                                  Navigator.pushNamed(context, LogIn.id);
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+            )
           ],
         ),
       ),

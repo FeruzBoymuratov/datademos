@@ -1,8 +1,14 @@
 import 'package:datademos/pages/log_in.dart';
 import 'package:datademos/pages/sign_up.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
-void main() {
+Future<void> main() async {
+
+  await Hive.initFlutter();
+  await Hive.openBox("Feruz");
+
   runApp(const MyApp());
 }
 
@@ -27,6 +33,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: const LogIn(),
+      debugShowCheckedModeBanner: false,
       routes: {
         LogIn.id:(context) => const LogIn(),
         SignUp.id:(context) => const SignUp(),
